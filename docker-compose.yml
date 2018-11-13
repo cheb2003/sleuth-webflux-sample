@@ -41,7 +41,12 @@ services:
       - prometheus      
 
   sample-service-app:
-    image: "sample-backend-app:0.0.1-SNAPSHOT"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        JAR_FILE: ./applications/sample-backend-app/build/libs/sample-backend-app-v1.jar
+    image: "sample-backend-app:v1"
     links:
       - rabbitmq
     depends_on:
@@ -55,7 +60,12 @@ services:
       - "8082:8080"
 
   sample-client-app:
-    image: "sample-client-app:0.0.1-SNAPSHOT"
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        JAR_FILE: ./applications/sample-client-app/build/libs/sample-client-app-v1.jar
+    image: "sample-client-app:v1"
     links:
       - sample-service-app
       - rabbitmq
